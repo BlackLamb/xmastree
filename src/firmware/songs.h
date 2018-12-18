@@ -52,7 +52,7 @@
  *              - Andy Tran (extramaster), 2015
  *          https://www.extramaster.net/tools/midiToArduino/
  *
- *      The songs are gernerated from:
+ *      The songs are generated from:
  *          https://www.extramaster.net/tools/midiToArduino/processFile/?url=http://www.jump-gate.com/christmas/music/midi/joyworld.mid&track=1
  *          https://www.extramaster.net/tools/midiToArduino/processFile/?url=http://www.jump-gate.com/christmas/music/midi/wewishu2.mid&track=3
  *          https://www.extramaster.net/tools/midiToArduino/processFile/?url=http://www.jump-gate.com/christmas/music/midi/rudolf.mid&track=1
@@ -75,6 +75,74 @@ bool delaySong(unsigned duration)
   
     return changeSong;
 }
+
+/*
+ *
+ *      Silent Night
+ *
+ *      More Information:
+ *          https://en.wikipedia.org/wiki/Silent_Night
+ *
+ */
+
+#define NOTE_COUNT_SILENTNIGHT   46
+ 
+const int notes_silentNight[] = {
+    // Note, Duration
+    So, bt3_2,
+    La, bt1_2, 
+    So, bt, 
+    Mi, bt3, 
+    
+    So, bt3_2,
+    La, bt1_2,
+    So, bt, 
+    Mi, bt3,
+    
+    Re_, bt2, 
+    Re_, bt1_2, 
+    Si, bt3, 
+    
+    Do_, bt2, 
+    Do_, bt1_2, 
+    So, bt3,
+    
+    La, bt2, 
+    La, bt, 
+    Do_, bt3_2, 
+    Si, bt1_2, 
+    La, bt, 
+    So, bt3_2, 
+    La, bt1_2, 
+    So, bt, 
+    Mi, bt3,
+    
+    La, bt2, 
+    La, bt, 
+    Do_, bt3_2, 
+    Si, bt1_2, 
+    La, bt, 
+    So, bt3_2, 
+    La, bt1_2, 
+    So, bt, 
+    Mi, bt3,
+    
+    Re_, bt2, 
+    Re_, bt, 
+    Fa_, bt3_2, 
+    Re_, bt1_2, 
+    Si, bt, 
+    Do_, bt3,
+    
+    Mi_, bt3,
+    Do_, bt, 
+    So, bt, 
+    Mi, bt, 
+    So, bt3_2, 
+    Fa, bt1_2, 
+    Re, bt, 
+    Do, bt6
+};
 
 /*
  *
@@ -409,77 +477,13 @@ const float notes_jingleBells[] = {
     783, 208.33275, 231.480833333,
 };
 
-/*      Silent Night
- *
- *      More Information:
- *          https://en.wikipedia.org/wiki/Silent_Night
- *
- */
-
-#define NOTE_COUNT_SILENTNIGHT   46
- 
-const int notes_silentNight[] = {
-    // Note, Duration
-    So, bt3_2,
-    La, bt1_2, 
-    So, bt, 
-    Mi, bt3, 
-    
-    So, bt3_2,
-    La, bt1_2,
-    So, bt, 
-    Mi, bt3,
-    
-    Re_, bt2, 
-    Re_, bt1_2, 
-    Si, bt3, 
-    
-    Do_, bt2, 
-    Do_, bt1_2, 
-    So, bt3,
-    
-    La, bt2, 
-    La, bt, 
-    Do_, bt3_2, 
-    Si, bt1_2, 
-    La, bt, 
-    So, bt3_2, 
-    La, bt1_2, 
-    So, bt, 
-    Mi, bt3,
-    
-    La, bt2, 
-    La, bt, 
-    Do_, bt3_2, 
-    Si, bt1_2, 
-    La, bt, 
-    So, bt3_2, 
-    La, bt1_2, 
-    So, bt, 
-    Mi, bt3,
-    
-    Re_, bt2, 
-    Re_, bt, 
-    Fa_, bt3_2, 
-    Re_, bt1_2, 
-    Si, bt, 
-    Do_, bt3,
-    
-    Mi_, bt3,
-    Do_, bt, 
-    So, bt, 
-    Mi, bt, 
-    So, bt3_2, 
-    Fa, bt1_2, 
-    Re, bt, 
-    Do, bt6
-};
 
 /*
  *
  *      Xmas Songs
  *
  */
+
 void playJoyToTheWorld()
 {
     int noteCount = NOTE_COUNT_JOYTOTHEWORLD;
@@ -559,3 +563,4 @@ void playSilentNight()
     if (!repeatSong)
         nextSong();
 }
+

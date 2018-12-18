@@ -2,7 +2,7 @@
 
 ![](/hardware/images/header.jpg)
 
-It's a Happy Hardware Holiday for all! Meet the Particle Christmas Tree, a limited edition PCB packed full of cheer with customizable light patterns and holiday tunes. Use your tree with a Particle Photon & Electron to light up the LEDs and play music. Control your tree from the onboard joystick or from the Christmas Tree Web App.
+It's a Happy Hardware Holiday for all! Meet the Particle Christmas Tree, a limited edition PCB packed full of cheer with customizable light patterns and holiday tunes. Use your tree with a Particle Photon or Electron to light up the LEDs and play music. Control your tree from the onboard joystick or from the Christmas Tree Web App.
 
 Learn how to get started below. Happy Holidays from Team Particle!
 
@@ -15,9 +15,15 @@ Learn how to get started below. Happy Holidays from Team Particle!
 
 ## STEPS 
 
-You can setup the tree in a matter of minutes. Insert the Photon into the socket, plug in the USB power supply, flash the  christmas tree firmware, and spread the cheer!
+You can setup the tree in a matter of minutes.
 
-You can easily flash the firmware using our online IDE - no downloads required. Visit [build.particle.io](https://go.particle.io/shared_apps/5a2ad3e7597791b71b0010e2) to grab the code.
+1. Insert the Photon into the socket
+1. Plug in the USB power supply
+1. Flash [the Christmas tree firmware from the Web IDE][Firmware shared app] - no downloads required.
+1. [Open the web interface][Web interface] and spread the cheer!
+
+[Firmware shared app]: https://go.particle.io/shared_apps/5a3f997de240b9471e001108
+[Web interface]: https://particle-iot.github.io/xmastree
 
 <p align="center">
 <img src="/hardware/images/steps-all.png">
@@ -29,7 +35,7 @@ You can easily flash the firmware using our online IDE - no downloads required. 
 
 ### Joystick
 
-The joystick is a 5 way button: up, down, left, right, and center (push in) the you can reprogram the usage any way you'd like. We have setup the button for you in the Christmas tree firmware to toggle light patterns and music.
+The joystick is a 5 way button: up, down, left, right, and center (push in) then you can reprogram the usage any way you'd like. We have setup the button for you in the Christmas tree firmware to toggle light patterns and music.
 
 |DIR   | PIN |
 |:---  |:--- |
@@ -89,11 +95,21 @@ You can use the bottom header to mount the tree on a breadboard and power/contro
 ## USING THE WEB INTERFACE
 
 <p align="center">
-<a href="https://spark.github.io/xmastree" target="_blank">
+<a href="https://particle-iot.github.io/xmastree" target="_blank">
 <img src="/hardware/images/webinterface_preview.png" width=400>
 </a></p>
 
-There is a hosted version of the web interface you can use to control your tree, available at [https://spark.github.io/xmastree](https://spark.github.io/xmastree). Simply login with your Particle account, select your device and you'll be able to control the LEDs and music from a desktop or mobile browser.
+There is [a hosted version of the web interface you can use to control your tree][Web interface]. Simply login with your Particle account, select your device and you'll be able to control the LEDs and music from a desktop or mobile browser.
+
+## MODIFYING THE FIRMWARE
+
+[![firmware](https://img.shields.io/badge/Particle%20Shared%20App-XMASTREE-blue.svg?style=for-the-badge&colorA=00aedf&colorB=555555)][Firmware shared app]
+
+Import the firmware to your Particle account in the Web IDE with the button above. You'll be
+able to add new songs or tweak the functionality to your heart's
+content.
+
+Click [here](FIRMWARE.md) for more information about the Xmas Tree firmware.
 
 ## CONNECT
 

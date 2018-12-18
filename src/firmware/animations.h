@@ -15,16 +15,17 @@
  *
  */
 
-#define ANIMATION_COUNT     5
+#define ANIMATION_COUNT     6
 
 #define WHITEOVERRAINBOW    0
 #define RAINBOWFADE2WHITE   1
 #define PULSEWHITE          2
 #define REDGREEN            3
 #define RANDOMGREEN         4
+#define SPARKCYAN           5
 
 /* Animation List */
-String animationList = "White Over Rainbow, Rainbow Fade To White, Pulse White, Red on Green, Random on Green";
+String animationList = "White Over Rainbow, Rainbow Fade To White, Pulse White, Red on Green, Random on Green, Spark with Particle Cyan";
 
 /* An indicator to exit the current LED animation */
 bool changeAnimation = false;
@@ -80,6 +81,19 @@ bool delayAnimation(unsigned duration)
     }
   
     return changeAnimation;
+}
+
+bool randomDiff(uint8_t *buf, uint8_t len)
+{
+    for (uint8_t i = 0; i < len; i++) {
+        for (uint8_t j = 0; j < len; j++) {
+            if (i != j && buf[i] == buf[j]) {
+                return false;
+            }
+        }
+    }
+    
+    return true;
 }
 
 /*
@@ -289,7 +303,83 @@ void randomGreen(uint8_t wait)
         leds.show();
         delayAnimation(wait);
         
-    if (!repeatAnimation && loopCount++ == (loopSize * 20))
-        nextAnimation();
-    }
+    	if (!repeatAnimation && loopCount++ == (loopSize * 20))
+        	nextAnimation();
+	}
+}
+void sparkCyan(uint8_t wait)
+{
+    uint8_t leftOnIndex[3], rightOnIndex[3];
+    
+    while(true) {
+        
+        for (uint8_t i = 0; i < 3; i++) {
+            leftOnIndex[i]  = random(13);
+            rightOnIndex[i] = random(12);
+        }
+        
+        while (!randomDiff(leftOnIndex, 3)) {
+            for (uint8_t i = 0; i < 3; i++) {
+                leftOnIndex[i]  = random(13);
+            }
+        }
+        
+        while (!randomDiff(rightOnIndex, 3)) {
+            for (uint8_t i = 0; i < 3; i++) {
+                rightOnIndex[i]  = random(12);
+            }
+        }
+        
+        for (int j = 0; j < 256 ; j++) {
+
+            if (changeAnimation)
+                return;
+    
+            for (uint16_t i = 0; i < leds.numPixels(); i++) {
+                
+                if (i < 13) {
+                    if (i == leftOnIndex[0] || i == leftOnIndex[1] || i == leftOnIndex[2])
+                        leds.setPixelColor(i, leds.Color(0,j,j));
+                    else
+                        leds.setPixelColor(i, leds.Color(0,0,0));
+                }
+                else {
+                    uint8_t index = i - 13;
+                    if (index == rightOnIndex[0] || index == rightOnIndex[1] || index == rightOnIndex[2])
+                        leds.setPixelColor(i, leds.Color(0,j,j));
+                    else
+                        leds.setPixelColor(i, leds.Color(0,0,0));
+                }
+            }
+            
+            delay(wait);
+            leds.show();
+        }
+        
+        for (int j = 255; j >= 0 ; j--) {
+        
+            if (changeAnimation)
+                return;
+    
+            for (uint16_t i = 0; i < leds.numPixels(); i++) {
+                
+                if (i < 13) {
+                    if (i == leftOnIndex[0] || i == leftOnIndex[1] || i == leftOnIndex[2])
+                        leds.setPixelColor(i, leds.Color(0,j,j));
+                    else
+                        leds.setPixelColor(i, leds.Color(0,0,0));
+                }
+                else {
+                    uint8_t index = i - 13;
+                    if (index == rightOnIndex[0] || index == rightOnIndex[1] || index == rightOnIndex[2])
+                        leds.setPixelColor(i, leds.Color(0,j,j));
+                    else
+                        leds.setPixelColor(i, leds.Color(0,0,0));
+                }
+            }
+            
+            delay(wait);
+            leds.show();
+        }
+	}
 }

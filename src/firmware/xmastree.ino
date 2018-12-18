@@ -1,6 +1,3 @@
-// This #include statement was automatically added by the Particle IDE.
-#include <dotstar.h>
-
 /*
  *      Copyright 2017 Particle Industries, Inc.
  *
@@ -131,28 +128,28 @@ void stopTone(String)
 void publishConnected()
 {
     Serial.println("publishConnected");
-    //Particle.publish("xtreeConnected", projName);
+    Particle.publish("xtreeConnected", projName);
 }
 
 /* For publishing the effect state changed event to the cloud */
 void publishStateChanged()
 {
     Serial.println("publishStateChanged");
-    //Particle.publish("stateChanged", String(currentState));
+    Particle.publish("stateChanged", String(currentState));
 }
 
 /* For publishing the animation changed event to the cloud */
 void publishAnimationChanged()
 {
     Serial.println("publishAnimationChanged");
-    //Particle.publish("animChanged", String(currentAnimation));
+    Particle.publish("animChanged", String(currentAnimation));
 }
 
 /* For publishing the song changed event to the cloud */
 void publishSongChanged()
 {
     Serial.println("publishSongChanged");
-    //Particle.publish("songChanged", String(currentSong));
+    Particle.publish("songChanged", String(currentSong));
 }
 
 #include "songs.h"
@@ -455,8 +452,10 @@ void processAnimations()
                 pulseWhite(5);
             else if (currentAnimation == REDGREEN)
                 redGreen(500);
-            else if (currentAnimation == RANDOMGREEN)
+	    else if (currentAnimation == RANDOMGREEN)
                 randomGreen(2500);
+            else if (currentAnimation == SPARKCYAN)
+                sparkCyan(3);
         }
 
         delay(250);

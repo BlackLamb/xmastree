@@ -15,17 +15,21 @@
  *
  */
 
-#define ANIMATION_COUNT     3
+#define ANIMATION_COUNT     5
 
 #define WHITEOVERRAINBOW    0
 #define RAINBOWFADE2WHITE   1
 #define PULSEWHITE          2
+#define REDGREEN            3
+#define RANDOMGREEN         4
 
 /* Animation List */
-String animationList = "White Over Rainbow, Rainbow Fade To White, Pulse White";
+String animationList = "White Over Rainbow, Rainbow Fade To White, Pulse White, Red on Green, Random on Green";
 
 /* An indicator to exit the current LED animation */
 bool changeAnimation = false;
+int loopCount = 0;
+const int loopSize = 20;
 
 uint8_t red(uint32_t c)
 {
@@ -127,6 +131,9 @@ void whiteOverRainbow(uint8_t wait, uint8_t whiteSpeed, uint8_t whiteLength )
             tail %= leds.numPixels();
             leds.show();
             delay(wait);
+            
+        if (!repeatAnimation && loopCount++ == (loopSize * 10))
+        nextAnimation();
         }
     }
 }
@@ -209,6 +216,9 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops)
 
     if (delayAnimation(500))
         return;
+        
+    if (!repeatAnimation && loopCount++ == loopSize)
+        nextAnimation();
 }
 
 void pulseWhite(uint8_t wait)
@@ -235,6 +245,51 @@ void pulseWhite(uint8_t wait)
         
         delay(wait);
         leds.show();
+        
+        if (!repeatAnimation && loopCount++ == (loopSize * 10))
+        nextAnimation();
     }
 }
 
+void redGreen(uint8_t wait)
+{
+    uint16_t j = 0;
+    while(true) {
+
+        if (changeAnimation)
+            return;
+
+        for (uint16_t i = 0; i < leds.numPixels(); i++) {
+            leds.setPixelColor(i, (i + j) % 3 == 0 ? leds.Color(255,0,0) : leds.Color(0,255,0));
+        }
+        j = (j + 1) % 3;
+        
+        leds.show();
+        delayAnimation(wait);
+        
+        if (!repeatAnimation && loopCount++ == (loopSize * 20))
+        nextAnimation();
+    }
+}
+
+void randomGreen(uint8_t wait)
+{
+    uint16_t j = 0;
+    uint32_t color[] = {RGB_COLOR_BLUE, RGB_COLOR_RED, RGB_COLOR_YELLOW, RGB_COLOR_WHITE, RGB_COLOR_ORANGE, 8323327};
+    while(true) {
+
+        if (changeAnimation)
+            return;
+
+        for (uint16_t i = 0; i < leds.numPixels(); i++) {
+            leds.setPixelColor(i, (i + j) % 3 == 0 ? color[random(6)] : leds.Color(0,255,0));
+        }
+        j = (j + 1) % 3;
+        delay(wait);
+        leds.show();
+        delayAnimation(wait);
+        
+    if (!repeatAnimation && loopCount++ == (loopSize * 20))
+        nextAnimation();
+    }
+}

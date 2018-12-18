@@ -30,4 +30,3 @@
 #define STATE_SONG          2   // Playing song only
 #define STATE_BOTH          3   // Playing song and animation
 #define STATE_MAX           3
-

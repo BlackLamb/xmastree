@@ -32,6 +32,7 @@
  */
 
 #include "xmastree.h"       // All macros (#define) are in xmastree.h
+#include <dotstar.h>
 
 /* Project name and version */
 #define WHOAMI              "XmasTree"
@@ -39,7 +40,7 @@
 
 /* LED brightness value */
 /* Warning: less than 80 is highly recommended for safety and for your eyes */
-#define LED_BRIGHTNESS      30
+#define LED_BRIGHTNESS      20
 
 /* Project name and version */
 const char projName[] = WHOAMI;
@@ -54,14 +55,15 @@ int currentAnimation = 0;
 /* Current state of the effect when pressing the center button */
 int currentState = STATE_NONE;
 
-/* Set to TRUE to play the current song repeatedly */
+/* Set to TRUE to play the current song or Animation repeatedly */
 bool repeatSong = FALSE;
+bool repeatAnimation = TRUE;
 
 /* Current button down */
 volatile int buttonState = BUTTON_NONE;
 
 /* Create an instance for the xmasTree LEDs, each LED controlled by two pins, DATA and Clock */
-Adafruit_DotStar leds = Adafruit_DotStar(TOTAL_LED, PIN_LED_DATA, PIN_LED_CLOCK);
+Adafruit_DotStar leds = Adafruit_DotStar(TOTAL_LED, PIN_LED_DATA, PIN_LED_CLOCK, DOTSTAR_BGR);
 
 /* Two threads will be used for processing songs and LED animations */
 Thread *animationWorker, *songWorker;
@@ -105,6 +107,7 @@ int playLED(String color)
     for (int i = 0; i < TOTAL_LED; i++)
         leds.setPixelColor(i, strtol(color, NULL, 0));
     leds.show();
+    return 1;
 }
 
 /* Turn off all LEDs */
@@ -128,28 +131,28 @@ void stopTone(String)
 void publishConnected()
 {
     Serial.println("publishConnected");
-    Particle.publish("xtreeConnected", projName);
+    //Particle.publish("xtreeConnected", projName);
 }
 
 /* For publishing the effect state changed event to the cloud */
 void publishStateChanged()
 {
     Serial.println("publishStateChanged");
-    Particle.publish("stateChanged", String(currentState));
+    //Particle.publish("stateChanged", String(currentState));
 }
 
 /* For publishing the animation changed event to the cloud */
 void publishAnimationChanged()
 {
     Serial.println("publishAnimationChanged");
-    Particle.publish("animChanged", String(currentAnimation));
+    //Particle.publish("animChanged", String(currentAnimation));
 }
 
 /* For publishing the song changed event to the cloud */
 void publishSongChanged()
 {
     Serial.println("publishSongChanged");
-    Particle.publish("songChanged", String(currentSong));
+    //Particle.publish("songChanged", String(currentSong));
 }
 
 #include "songs.h"
@@ -232,6 +235,24 @@ int stopAnimation(String)
         currentState = STATE_SONG;
 
     return 1;
+}
+
+int toggleRepeatSong(String)
+{
+    repeatSong = !repeatSong;
+    Serial.println("repeatSong = " + repeatSong);
+    
+    return (int)repeatSong;
+}
+
+int toggleRepeatAnimation(String)
+{
+    repeatAnimation = !repeatAnimation;
+    Serial.println("repeatAnimation = " + repeatAnimation);
+    if (repeatAnimation == false)
+        loopCount = 0;
+    
+    return (int)repeatAnimation;
 }
 
 /* Toggle the state of the tree for the Center button */
@@ -326,6 +347,7 @@ int nextAnimation()
             currentAnimation = 0;
             
         changeAnimation = true;
+        loopCount = 0;
     }
 
     return currentAnimation;
@@ -342,6 +364,7 @@ int prevAnimation()
             currentAnimation = animationCount-1;
 
         changeAnimation = true;
+        loopCount = 0;
     }
     
     return currentAnimation;
@@ -430,6 +453,10 @@ void processAnimations()
                 rainbowFade2White(3, 6, 1);
             else if (currentAnimation == PULSEWHITE)
                 pulseWhite(5);
+            else if (currentAnimation == REDGREEN)
+                redGreen(500);
+            else if (currentAnimation == RANDOMGREEN)
+                randomGreen(2500);
         }
 
         delay(250);
@@ -444,14 +471,16 @@ void processSongs()
         changeSong = false;
 
         if ( (currentState == STATE_BOTH) || (currentState == STATE_SONG) ) {
-            if (currentSong == 0)
-                joyToTheWorld();
-            else if (currentSong == 1)
-                weWishYouAMerryXmas();
-            else if (currentSong == 2)
-                rudolfTheRedNosedReindeer();
-            else if (currentSong == 3)
-                jingleBells();
+            if (currentSong == SONG_JOYTOTHEWORLD)
+                playJoyToTheWorld();
+            else if (currentSong == SONG_WEWHISHYOUAMERRYXMAS)
+                playWeWishYouAMerryXmas();
+            else if (currentSong == SONG_RUDOLFTHEREDNOSEDREINDEER)
+                playRudolfTheRedNosedReindeer();
+            else if (currentSong == SONG_JINGLEBELLS)
+                playJingleBells();
+            else if (currentSong == SONG_SILENTNIGHT)
+                playSilentNight();
         }
 
         delay(2000);
@@ -473,6 +502,10 @@ void cloudInit()
     Particle.variable("currState", currentState);
     Particle.variable("songCount", songCount);
     Particle.variable("animCount", animationCount);
+    
+    Particle.variable("rptSong", repeatSong);
+    Particle.variable("rptAnimation", repeatAnimation);
+    Particle.variable("loopCount", loopCount);
 
     /* Cloud functions */
     Particle.function("playLED", playLED);
@@ -482,6 +515,8 @@ void cloudInit()
     Particle.function("playAnim", playAnimation);
     Particle.function("stopSong", stopSong);
     Particle.function("stopAnim", stopAnimation);
+    Particle.function("tglReptSong", toggleRepeatSong);
+    Particle.function("tglReptAnim", toggleRepeatAnimation);
 
     /* Cloud subscription */
     Particle.subscribe("btnPressed", buttonEventHandler);

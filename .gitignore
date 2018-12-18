@@ -1,6 +1,8 @@
 ###################################################################### macOS ##
 .DS_Store* # folder metadata
-Icon # custom finder icon (see: https://stackoverflow.com/a/21111738/579167)
+Icon
+
+ # custom finder icon (see: https://stackoverflow.com/a/21111738/579167)
 thumbs.db # thumbnail preview cache
 ._* # thumbnails
 
@@ -39,3 +41,7 @@ yarn-error.log*
 
 ######################################################################## css ##
 *.css.map # source maps
+*.bin
+*.code-workspace
+src/firmware/.vscode/
+src/firmware/xmastree.cpp

@@ -45,3 +45,6 @@ yarn-error.log*
 *.code-workspace
 src/firmware/.vscode/
 src/firmware/xmastree.cpp
+src/firmware/target/
+src/firmware/lib/
+src/firmware/src/xmastree.cpp

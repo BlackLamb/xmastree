@@ -452,10 +452,10 @@ void processAnimations()
                 pulseWhite(5);
             else if (currentAnimation == REDGREEN)
                 redGreen(500);
-	    else if (currentAnimation == RANDOMGREEN)
+	        else if (currentAnimation == RANDOMGREEN)
                 randomGreen(2500);
-            else if (currentAnimation == SPARKCYAN)
-                sparkCyan(3);
+            //else if (currentAnimation == SPARKCYAN)
+            //    sparkCyan(3);
         }
 
         delay(250);
@@ -594,7 +594,7 @@ void setup()
     songWorker = new Thread("song", processSongs);
     
     /* Start to play the 1st song and LED animation */
-    playSong("0");
+    //playSong("0");
     playAnimation("0");
 }
 

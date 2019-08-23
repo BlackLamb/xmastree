@@ -15,14 +15,14 @@
  *
  */
 
-#define ANIMATION_COUNT     6
+#define ANIMATION_COUNT     5
 
 #define WHITEOVERRAINBOW    0
 #define RAINBOWFADE2WHITE   1
 #define PULSEWHITE          2
 #define REDGREEN            3
 #define RANDOMGREEN         4
-#define SPARKCYAN           5
+//#define SPARKCYAN           5
 
 /* Animation List */
 String animationList = "White Over Rainbow, Rainbow Fade To White, Pulse White, Red on Green, Random on Green, Spark with Particle Cyan";
@@ -382,4 +382,7 @@ void sparkCyan(uint8_t wait)
             leds.show();
         }
 	}
+
+    if (!repeatAnimation && loopCount++ == loopSize)
+        nextAnimation();
 }
